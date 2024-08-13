@@ -74,7 +74,6 @@ fn get_compute_units(deals: &Vec<Deal>) -> String {
     }
     let mut prefix = format!("000000000000000000000000000000000000000000000000000000000000002{entries:0>65x}");
     prefix.push_str(&result);
-    println!("{prefix}");
     prefix
 }
 
