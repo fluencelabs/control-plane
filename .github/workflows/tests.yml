@@ -54,6 +54,7 @@ jobs:
         uses: fluencelabs/setup-fluence@v1
         with:
           version: unstable
+        continue-on-error: true
 
       - name: Set dependencies
         if: inputs.cargo-dependencies != 'null'
