@@ -25,10 +25,12 @@ alias SpellId: string
 alias WorkerId: string
 alias CID: string
 alias TxHash: string
+alias OnChainWorkerId: []u8
 
 data Deal:
     deal_id: DealId 
     -- For comparision, use DEAL_STATUS_* from consts.aqua
     status: string
-    unit_ids: []CUID
+    cu_ids: []CUID
     app_cid: string
+    onchain_worker_id: OnChainWorkerId

@@ -14,4 +14,4 @@
 /src/air
 /src/distro/decider-spell
 /src/compiled-aqua/
-
+shell.nix
