@@ -19,21 +19,23 @@
 aqua Connector declares *
 
 import CUID from "@fluencelabs/aqua-lib/workers.aqua"
-import DealId, TxHash, Deal from "../types.aqua"
+import DealId, TxHash, Deal, OnChainWorkerId from "../types.aqua"
 
 
 data DealInfo:
     -- For comparison, use DEAL_STATUS_* from consts.aqua
     status: string
-    unit_ids: []CUID
+    cu_ids: []CUID
     app_cid: string
+    onchain_worker_id: OnChainWorkerId
 
 func info_to_deal(deal_id: DealId, deal_info: DealInfo) -> Deal:
     <- Deal(
         deal_id = deal_id, 
         status = deal_info.status,
         app_cid = deal_info.app_cid,
-        unit_ids = deal_info.unit_ids
+        cu_ids = deal_info.cu_ids,
+        onchain_worker_id = deal_info.onchain_worker_id
        )
 
 data DealResult:
@@ -61,7 +63,7 @@ data TxResult:
 
 service ChainConnector("connector"):
   -- Register a worker on chain
-  register_worker(deal_id: string, worker_id: string, unit_ids: []CUID) -> TxHash
+  register_worker(deal_id: string, worker_id: string, onchain_worker_id: OnChainWorkerId) -> TxHash
   -- Get the list of current deals
   get_deals() -> []DealResult
   -- Get transaction receipts for the given transaction hashes

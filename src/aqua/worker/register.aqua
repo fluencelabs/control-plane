@@ -24,7 +24,7 @@ import Spell, TriggerConfig from "@fluencelabs/spell/spell_service.aqua"
 import "@fluencelabs/spell/spell_service.aqua"
 
 import deal_log, spell_log from "../fluence/spell.aqua"
-import DealId, WorkerId, TxHash from "../types.aqua"
+import DealId, WorkerId, TxHash, OnChainWorkerId from "../types.aqua"
 import ChainConnector from "../fluence/connector.aqua"
 
 use "../storage/tx.aqua" as TxStorage
@@ -33,7 +33,7 @@ import "../consts.aqua"
 import Json from "../fluence/peer.aqua"
 
 
-func register_worker(deal_id: DealId, worker_id: WorkerId, cu_ids: []CUID) -> ?TxHash:
+func register_worker(deal_id: DealId, worker_id: WorkerId, onchain_worker_id: OnChainWorkerId) -> ?TxHash:
     tx_hash: *TxHash
     try:
         exsiting_hash <- DealStorage.get_tx(deal_id)
@@ -42,7 +42,7 @@ func register_worker(deal_id: DealId, worker_id: WorkerId, cu_ids: []CUID) -> ?T
             tx_hash <<- exsiting_hash!
         else:
             deal_log(deal_id, ["Registering worker"])
-            tx <- ChainConnector.register_worker(deal_id, worker_id, cu_ids)
+            tx <- ChainConnector.register_worker(deal_id, worker_id, onchain_worker_id)
             TxStorage.store_tx(deal_id, tx)
             deal_log(deal_id, ["Worker registered, tx hash:", tx])
             tx_hash <<- tx

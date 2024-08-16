@@ -72,7 +72,7 @@ func install_deal(settings: WorkerSettings, deal: Deal) -> ?WorkerId:
     log = (msg: ⊤):
         deal_log(deal.deal_id, msg)
     
-    worker_id <- WorkerHelper.get_or_create(deal.deal_id, deal.unit_ids)
+    worker_id <- WorkerHelper.get_or_create(deal.deal_id, deal.cu_ids)
     if worker_id != nil:
         -- If it's not active, the deal is installed
         if Worker.is_active(deal.deal_id):
@@ -99,7 +99,7 @@ func install_deals(worker_settings: WorkerSettings, deals: []Deal):
             worker_id <- install_deal(worker_settings, deal)
             if worker_id != nil:
                 deal_log(deal.deal_id, ["Worker installed", worker_id])
-                tx_hash <- register_worker(deal.deal_id, worker_id!, deal.unit_ids)
+                tx_hash <- register_worker(deal.deal_id, worker_id!, deal.onchain_worker_id)
                 if tx_hash != nil:
                     DealStorage.store_deal(deal.deal_id, tx_hash!)
             else:

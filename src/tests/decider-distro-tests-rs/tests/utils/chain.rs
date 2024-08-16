@@ -37,6 +37,7 @@ pub struct Deal {
     pub deal_id: String,
     pub app: Option<TestApp>,
     pub status: Option<String>,
+    pub cus_num: u32,
 }
 
 impl Deal {
@@ -45,6 +46,7 @@ impl Deal {
             deal_id: deal_id.to_string(),
             app: Some(app),
             status: Some(status.to_string()),
+            cus_num: 3,
         }
     }
 
@@ -53,18 +55,26 @@ impl Deal {
             deal_id: deal_id.to_string(),
             app: None,
             status: None,
+            cus_num: 3
         }
     }
 }
 
-fn get_compute_units(ids: &Vec<&String>) -> String {
-    let cu_prefix = "aa3046a12a1aac6e840625e6";
-    let mut result = format!("0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000{}", ids.len());
-    for id in ids {
+fn get_compute_units(deals: &Vec<Deal>) -> String {
+    let mut entries = 0;
+    let mut result = String::new();
+    for deal in deals {
         // a unique cid is formed by appending the deal id to some prefix of existing cuid
-        result.push_str(&format!("{cu_prefix}{id}000000000000000000000000{id}00000000000000000000000000000000000000000000000000000000000fffbc"));
+
+        let id = &deal.deal_id;
+        for cu_i in 0..deal.cus_num {
+            result.push_str(&format!("{cu_i:0>24x}{id}000000000000000000000000{id}00000000000000000000000000000000000000000000000000000000000fffbc{id:1>64}"));
+            entries += 1;
+        }
     }
-    result
+    let mut prefix = format!("000000000000000000000000000000000000000000000000000000000000002{entries:0>65x}");
+    prefix.push_str(&result);
+    prefix
 }
 
 #[derive(Clone)]
@@ -116,7 +126,6 @@ pub async fn play_chain(server: &mut ServerHandle, chain_replies: ChainReplies) 
 }
 
 pub async fn play_get_deals(server: &mut ServerHandle, deals: &Vec<Deal>) {
-    let ids = deals.iter().map(|d| &d.deal_id).collect::<Vec<_>>();
     {
         // get compute units
         let (method, params) = server.receive_request().await.unwrap();
@@ -126,7 +135,7 @@ pub async fn play_get_deals(server: &mut ServerHandle, deals: &Vec<Deal>) {
             Some("diamond_contract")
         );
 
-        server.send_response(Ok(json!(get_compute_units(&ids))));
+        server.send_response(Ok(json!(get_compute_units(&deals))));
     }
 
     for _ in 0..deals.len() {
@@ -172,41 +181,6 @@ pub async fn play_get_deals(server: &mut ServerHandle, deals: &Vec<Deal>) {
         };
         server.send_response(reply);
     }
-
-    /*
-
-    // get app cid
-    for _ in 0..deals.len() {
-        let (method, params) = server.receive_request().await.unwrap();
-        assert_eq!(method, "eth_call");
-
-        let requested_deal = params[0].get("to").unwrap().as_str().unwrap();
-        let deal = deals
-            .iter()
-            .find(|deal| requested_deal.ends_with(&deal.deal_id));
-        assert!(
-            deal.is_some(),
-            "nox requested non-existent deal {requested_deal}, deals: {deals:?}"
-        );
-        let deal = deal.unwrap();
-
-        let reply = if let Some(ref app_cid) = deal.app {
-            Ok(json!(app_cid.encoded_cid()))
-        } else {
-            Err(json!("no app cid provided"))
-        };
-        server.send_response(reply);
-    }
-
-    let are_apps_broken = deals.iter().any(|d| d.app.is_none());
-    if are_apps_broken {
-        log::debug!("do not expect status calls since app cids are broken");
-        return;
-    }
-    // get deal status
-    for _ in 0..deals.len() {
-    }
-    */
 }
 
 pub async fn play_register_worker_gen(server: &mut ServerHandle, tx_hash: &Option<String>) {
