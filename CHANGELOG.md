@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.7.2](https://github.com/fluencelabs/decider/compare/connector-v0.7.1...connector-v0.7.2) (2024-08-16)
+
+
+### Features
+
+* support multi-cu contracts [BRND-48] ([#282](https://github.com/fluencelabs/decider/issues/282)) ([5e3c332](https://github.com/fluencelabs/decider/commit/5e3c3320924257d87244b2008fa5423d32ffbacb))
+
+
+### Bug Fixes
+
+* **ci:** ignore error on setup fcli ([6960e95](https://github.com/fluencelabs/decider/commit/6960e956f9777b074a7eb871fa9c87e07765ffaf))
+
 ## [0.7.1](https://github.com/fluencelabs/decider/compare/connector-v0.7.0...connector-v0.7.1) (2024-08-09)
 
 
