@@ -1,12 +1,14 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:base", ":semanticCommitTypeAll(chore)"],
+  "extends": [
+    "github>fluencelabs/renovate",
+    "github>fluencelabs/renovate:npm",
+    "github>fluencelabs/renovate:cargo"
+  ],
   "enabledManagers": [
     "cargo",
     "regex",
-    "github-actions"
+    "npm"
   ],
-  "schedule": "every weekend",
   "ignorePresets": [":ignoreModulesAndTests"],
   "regexManagers": [
     {
@@ -21,30 +23,8 @@
   ],
   "packageRules": [
     {
-      "matchManagers": ["cargo", "npm"],
-      "matchPackagePatterns": ["@fluencelabs/.*", "fluence-.*", "marine-.*"],
-      "semanticCommitType": "fix",
-      "semanticCommitScope": "deps",
-      "schedule": "at any time"
-    },
-    {
       "managers": ["regex"],
       "groupName": "nox dependencies in tests"
-    },
-    {
-      "matchDepTypes": ["devDependencies"],
-      "prPriority": -1,
-      "semanticCommitType": "chore",
-      "semanticCommitScope": "deps"
-    },
-    {
-      "matchUpdateTypes": ["major"],
-      "prConcurrentLimit": 1
-    },
-    {
-      "matchManagers": ["github-actions"],
-      "groupName": "all github-actions",
-      "prPriority": -1
     }
   ]
 }
