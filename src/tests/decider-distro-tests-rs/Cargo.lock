@@ -1446,6 +1446,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "cid"
+version = "0.11.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3147d8272e8fa0ccd29ce51194dd98f79ddfb8191ba9e3409884e751798acf3a"
+dependencies = [
+ "core2",
+ "multibase",
+ "multihash 0.19.1",
+ "unsigned-varint 0.8.0",
+]
+
+[[package]]
 name = "cid-utils"
 version = "0.1.0"
 source = "git+https://github.com/fluencelabs/nox.git?branch=multi_cu#84858fb0cc5356421bdbed572a51ed565e04b224"
@@ -2111,6 +2123,8 @@ dependencies = [
 [[package]]
 name = "decider-distro"
 version = "0.7.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1f87fc5b72d3931ea4017ee61d7c99a7f98ec6f337b877f4e78fe14a708cb1ec"
 dependencies = [
  "built 0.7.2",
  "fluence-spell-dtos",
@@ -2120,9 +2134,7 @@ dependencies = [
 
 [[package]]
 name = "decider-distro"
-version = "0.7.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1f87fc5b72d3931ea4017ee61d7c99a7f98ec6f337b877f4e78fe14a708cb1ec"
+version = "0.7.2"
 dependencies = [
  "built 0.7.2",
  "fluence-spell-dtos",
@@ -2134,11 +2146,11 @@ dependencies = [
 name = "decider-distro-tests-rs"
 version = "0.1.0"
 dependencies = [
- "cid",
+ "cid 0.11.1",
  "clarity",
  "connected-client",
  "created-swarm",
- "decider-distro 0.7.1",
+ "decider-distro 0.7.2",
  "eyre",
  "futures",
  "hex",
@@ -4359,7 +4371,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5acd707e8d8b092e967b2af978ed84709eaded82b75effe6cb6f6cc797ef8158"
 dependencies = [
  "anyhow",
- "cid",
+ "cid 0.10.1",
  "core2",
  "multibase",
  "multihash 0.18.1",
@@ -8205,7 +8217,7 @@ source = "git+https://github.com/fluencelabs/nox.git?branch=multi_cu#84858fb0cc5
 dependencies = [
  "aqua-ipfs-distro",
  "async-trait",
- "decider-distro 0.7.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "decider-distro 0.7.1",
  "eyre",
  "fluence-app-service",
  "fluence-spell-dtos",
